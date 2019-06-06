@@ -23,17 +23,17 @@ resources:
   source:
     api_token: ((pivnet_token))
     product_slug: platform-automation
-    product_version: 3\.(.*)
+    product_version: 3.0.1
     sort_by: semver
-    regexp: platform-automation-image-(.*).tgz
+    regexp: platform-automation-image-3.0.1.tgz
 - name: platform-automation-tasks
   type: pivnet
   source:
     api_token: ((pivnet_token))
     product_slug: platform-automation
-    product_version: 3\.(.*)
+    product_version: 3.0.1 
     sort_by: semver
-    regexp: platform-automation-tasks-(.*).zip
+    regexp: platform-automation-tasks-3.0.1.zip
 
 jobs:
 - name: terraform-aws
