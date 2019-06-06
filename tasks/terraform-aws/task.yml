@@ -4,7 +4,9 @@ platform: linux
 
 image_resource:
   type: docker-image
-  source: {repository: ykisialiou/terraform-docker}
+  source: 
+    repository: ykisialiou/terraform-docker
+    tag: 0.11.14 
 
 params:
   ENV_FILE:
