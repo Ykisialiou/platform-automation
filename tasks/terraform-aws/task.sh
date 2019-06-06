@@ -1,5 +1,9 @@
 #!/bin/sh -e
 
+if [ -f "platform-automation-config/foundations/$FOUNDATION/pcf.tfplan" ]; then
+	cp platform-automation-config/foundations/$FOUNDATION/pcf.tfplan terraforming-aws/terraforming-pas
+fi
+
 cd terraforming-aws/terraforming-pas
 
 cat <<EOF > terraform.tfvars 
@@ -18,14 +22,12 @@ use_tcp_routes     = true
 ssl_cert = <<EOL
 $SSL_CA_CERT
 EOL
-
 ssl_private_key = <<EOL
 $SSL_CA_PRIVATE_KEY
 EOL
-ssl_ca_cert	   = "$SSL_CA_CERT"
-ssl_ca_private_key = "$SSL_CA_PRIVATE_KEY"
 EOF
 
 terraform init
-terraform plan -out=../../generated-state/pcf.tfplan
-terraform apply ../../generated-state/pcf.tfplan
+terraform plan -out=pcf.tfplan
+terraform apply pcf.tfplan
+cp pcf.tfplan ../../generated-state
