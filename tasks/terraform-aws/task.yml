@@ -1,0 +1,23 @@
+---
+
+platform: linux
+
+image_resource:
+  type: docker-image
+  source: {repository: hashicorp/terraform}
+
+params:
+  ENV_FILE:
+  PRODUCT_NAME:
+
+inputs:
+  - name: platform-automation
+  - name: platform-automation-config
+  - name: terraforming-aws
+
+outputs:
+  - name: generated-state 
+
+run:
+  path: platform-automation/tasks/terraform-aws/task.sh
+

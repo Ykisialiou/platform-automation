@@ -1,0 +1,76 @@
+resource_types:
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+
+resources:
+- name: platform-automation
+  type: git
+  source:
+    uri: https://github.com/Ykisialiou/platform-automation.git
+- name: platform-automation-config
+  type: git
+  source:
+    uri: https://github.com/Ykisialiou/platform-config.git
+- name: terraforming-aws
+  type: git
+  source:
+    uri: https://github.com/pivotal-cf/terraforming-aws.git
+- name: platform-automation-image
+  type: pivnet
+  source:
+    api_token: ((pivnet_token))
+    product_slug: platform-automation
+    product_version: 3\.(.*)
+    sort_by: semver
+    regexp: platform-automation-image-(.*).tgz
+- name: platform-automation-tasks
+  type: pivnet
+  source:
+    api_token: ((pivnet_token))
+    product_slug: platform-automation
+    product_version: 3\.(.*)
+    sort_by: semver
+    regexp: platform-automation-tasks-(.*).zip
+
+jobs:
+- name: terraform-aws
+  plan:
+  - aggregate:
+    - get: platform-automation
+    - get: platform-automation-config
+    - get: terraforming-aws
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+  - task: terrafrom-aws
+    file: platform-automation/tasks/terraform-aws/task.yml 
+    params:
+      FOUNDATION: ((foundation))
+      AWS_ACCESS_KEY: ((aws_access_key))
+      AWS_SECRET_KEY: ((aws_secret_key))
+      AWS_REGION: ((aws_region))
+      AWS_AZS: ((aws_azs))
+      AWS_AMI: ((aws_ami))
+      DOMAIN: ((domain))
+      SSL_CA_CERT: ((ssl_ca_cert))
+      SSL_CA_PRIVATE_KEY: ((ssl_ca_private_key))
+  - task: make-git-commit
+    file: platform-automation-tasks/tasks/make-git-commit.yml 
+    input_mapping:
+      file-source: generated-state
+      repository: platform-automation-config
+    params:
+      FILE_SOURCE_PATH: pcf.tfplan
+      FILE_DESTINATION_PATH: foundations/((foundation))/pcf.tfplan
+      GIT_AUTHOR_NAME: automation-bot
+      GIT_AUTHOR_EMAIL: automation-bot@example.com
+      COMMIT_MESSAGE: "Pushing terraform state"
+  - put: platform-automation-config
+
+  
