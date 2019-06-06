@@ -15,6 +15,13 @@ vpc_cidr           = "10.0.0.0/16"
 use_route53        = true
 use_ssh_routes     = true
 use_tcp_routes     = true
+ssl_cert = <<EOL
+$SSL_CA_CERT
+EOL
+
+ssl_private_key = <<EOL
+$SSL_CA_PRIVATE_KEY
+EOL
 ssl_ca_cert	   = "$SSL_CA_CERT"
 ssl_ca_private_key = "$SSL_CA_PRIVATE_KEY"
 EOF
