@@ -13,11 +13,13 @@ resources:
 - name: platform-automation-config
   type: git
   source:
-    uri: https://github.com/Ykisialiou/platform-config.git
+    uri: git@github.com:Ykisialiou/platform-config.git
+    private_key: ((github-machine-acc))
 - name: platform-automation-config-out
   type: git
   source:
-    uri: https://github.com/Ykisialiou/platform-config.git
+    uri: git@github.com:Ykisialiou/platform-config.git
+    private_key: ((github-machine-acc))
 - name: terraforming-aws
   type: git
   source:
