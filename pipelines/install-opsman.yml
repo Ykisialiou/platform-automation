@@ -14,6 +14,10 @@ resources:
   type: git
   source:
     uri: https://github.com/Ykisialiou/platform-config.git
+- name: platform-automation-config-out
+  type: git
+  source:
+    uri: https://github.com/Ykisialiou/platform-config.git
 - name: terraforming-aws
   type: git
   source:
@@ -54,12 +58,14 @@ jobs:
     input_mapping:
       file-source: generated-state
       repository: platform-automation-config
+    output_mapping:
+      repository-commit: platform-automation-config-out
     params:
       FILE_SOURCE_PATH: pcf.tfplan
       FILE_DESTINATION_PATH: foundations/((foundation))/pcf.tfplan
       GIT_AUTHOR_NAME: automation-bot
       GIT_AUTHOR_EMAIL: automation-bot@example.com
       COMMIT_MESSAGE: "Pushing terraform state"
-  - put: platform-automation-config
+  - put: platform-automation-config-out
 
   
