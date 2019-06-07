@@ -8,9 +8,7 @@ image_resource:
     repository: ykisialiou/terraform-docker
     tag: 0.11.14 
 
-params:
-  ENV_FILE:
-  PRODUCT_NAME:
+params: {}
 
 inputs:
   - name: platform-automation

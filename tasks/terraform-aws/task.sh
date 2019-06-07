@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+exit 1
+
 if [ -f "platform-automation-config/foundations/$FOUNDATION/pcf.tfplan" ]; then
 	cp platform-automation-config/foundations/$FOUNDATION/pcf.tfplan terraforming-aws/terraforming-pas
 fi
