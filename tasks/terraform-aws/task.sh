@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
-if [ -f "platform-automation-config/foundations/$FOUNDATION/pcf.tfplan" ]; then
-	cp platform-automation-config/foundations/$FOUNDATION/pcf.tfplan terraforming-aws/terraforming-pas
+if [ -f "platform-automation-config/foundations/$FOUNDATION/terraform.tfstate" ]; then
+	cp platform-automation-config/foundations/$FOUNDATION/terraform.tfstate terraforming-aws/terraforming-pas
 fi
 
 cd terraforming-aws/terraforming-pas
@@ -28,6 +28,6 @@ EOL
 EOF
 
 terraform init
-terraform plan -out=pcf.tfplan
+terraform plan 
 terraform apply pcf.tfplan
-cp pcf.tfplan ../../generated-state
+cp terraform.tfstate ../../generated-state

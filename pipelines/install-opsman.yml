@@ -22,7 +22,14 @@ resources:
   type: git
   source:
     uri: https://github.com/pivotal-cf/terraforming-aws.git
-- name: platform-automation-pivnet
+- name: platform-automation-tasks
+  type: pivnet
+  source:
+    api_token: ((pivnet_token))
+    product_slug: platform-automation
+    product_version: 3.0.1
+    sort_by: semver
+- name: platform-automation-image
   type: pivnet
   source:
     api_token: ((pivnet_token))
@@ -37,11 +44,11 @@ jobs:
     - get: platform-automation
     - get: platform-automation-config
     - get: terraforming-aws
-    - get: platform-automation-pivnet
+    - get: platform-automation-image
       params:
         globs: ["platform-automation-image-3.0.1.tgz"]      
         unpack: true
-    - get: platform-automation-pivnet
+    - get: platform-automation-tasks
       params:
         globs: ["platform-automation-tasks-3.0.1.zip"]      
         unpack: true
@@ -58,7 +65,8 @@ jobs:
       SSL_CA_CERT: ((ssl_ca_cert))
       SSL_CA_PRIVATE_KEY: ((ssl_ca_private_key))
   - task: make-git-commit
-    file: platform-automation-pivnet/tasks/make-git-commit.yml 
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/make-git-commit.yml 
     input_mapping:
       file-source: generated-state
       repository: platform-automation-config
