@@ -39,7 +39,11 @@ jobs:
     - get: terraforming-aws
     - get: platform-automation-pivnet
       params:
-        globs: ["platform-automation-image-3.0.1.tgz", "platform-automation-tasks-3.0.1.zip"]      
+        globs: ["platform-automation-image-3.0.1.tgz"]      
+        unpack: true
+    - get: platform-automation-pivnet
+      params:
+        globs: ["platform-automation-tasks-3.0.1.zip"]      
         unpack: true
   - task: terrafrom-aws
     file: platform-automation/tasks/terraform-aws/task.yml 
